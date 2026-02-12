@@ -56,6 +56,33 @@ import { Project, Supplier, RfqRequest } from '../../shared/models';
             <span>Add Supplier</span>
           </a>
         </div>
+
+        @if (!demoDataLoaded() && !demoLoading()) {
+          <button class="demo-button" (click)="loadDemoData()">
+            <svg class="demo-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+            Load Demo Data
+          </button>
+        }
+
+        @if (demoLoading()) {
+          <button class="demo-button loading" disabled>
+            <span class="spinner"></span>
+            Loading Demo Data...
+          </button>
+        }
+
+        @if (showSuccessToast()) {
+          <div class="toast success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
+            Demo data loaded successfully!
+          </div>
+        }
       </div>
     </div>
   `,
@@ -176,6 +203,99 @@ import { Project, Supplier, RfqRequest } from '../../shared/models';
       margin-bottom: 0.75rem;
       box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
+
+    .demo-button {
+      margin-top: 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.25rem;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+        background: rgba(99, 102, 241, 0.1);
+      }
+
+      &:disabled {
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      &.loading {
+        border-color: var(--primary-color);
+        color: var(--primary-color);
+      }
+    }
+
+    .demo-icon {
+      width: 18px;
+      height: 18px;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid transparent;
+      border-top-color: var(--primary-color);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1rem 1.5rem;
+      background: var(--surface-color);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      animation: slideIn 0.3s ease, fadeOut 0.3s ease 2.7s forwards;
+      z-index: 1000;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      &.success {
+        border-color: #22c55e;
+        color: #22c55e;
+      }
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeOut {
+      to {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+    }
   `]
 })
 export class DashboardComponent implements OnInit {
@@ -187,9 +307,13 @@ export class DashboardComponent implements OnInit {
   rfqs = signal<RfqRequest[]>([]);
 
   activeProjects = signal(0);
+  demoDataLoaded = signal(false);
+  demoLoading = signal(false);
+  showSuccessToast = signal(false);
 
   ngOnInit(): void {
     this.loadData();
+    this.checkDemoDataStatus();
   }
 
   private loadData(): void {
@@ -206,6 +330,28 @@ export class DashboardComponent implements OnInit {
 
     this.api.get<RfqRequest[]>('/rfq').subscribe({
       next: (rfqs) => this.rfqs.set(rfqs)
+    });
+  }
+
+  private checkDemoDataStatus(): void {
+    this.api.get<{ loaded: boolean }>('/demo/status').subscribe({
+      next: (res) => this.demoDataLoaded.set(res.loaded)
+    });
+  }
+
+  loadDemoData(): void {
+    this.demoLoading.set(true);
+    this.api.post<{ success: boolean; message: string; alreadyLoaded: boolean }>('/demo/load', {}).subscribe({
+      next: (res) => {
+        this.demoLoading.set(false);
+        this.demoDataLoaded.set(true);
+        this.showSuccessToast.set(true);
+        this.loadData();
+        setTimeout(() => this.showSuccessToast.set(false), 3000);
+      },
+      error: () => {
+        this.demoLoading.set(false);
+      }
     });
   }
 }

@@ -1,6 +1,7 @@
 package eu.buildquote.repository;
 
 import eu.buildquote.entity.Supplier;
+import eu.buildquote.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,4 +11,5 @@ import java.util.List;
 public interface SupplierRepository extends JpaRepository<Supplier, Long> {
     List<Supplier> findByUserId(Long userId);
     List<Supplier> findByUserIdOrderByCreatedAtDesc(Long userId);
+    long countByUser(User user);
 }
