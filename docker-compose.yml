@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: buildquote-db
+    environment:
+      POSTGRES_DB: buildquote
+      POSTGRES_USER: buildquote
+      POSTGRES_PASSWORD: buildquote
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U buildquote"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  backend:
+    build: ./backend
+    container_name: buildquote-backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/buildquote
+      SPRING_DATASOURCE_USERNAME: buildquote
+      SPRING_DATASOURCE_PASSWORD: buildquote
+      JWT_SECRET: your-super-secret-jwt-key-change-this-in-production-make-it-very-long
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: buildquote-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
