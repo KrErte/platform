@@ -1,8 +1,8 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '@core/services/api.service';
-import { Project, BillOfQuantities, BoqItem, Supplier, RfqRequest } from '@shared/models';
+import { ApiService } from '../../core/services/api.service';
+import { Project, BillOfQuantities, BoqItem, Supplier, RfqRequest } from '../../shared/models';
 
 @Component({
   selector: 'app-project-detail',

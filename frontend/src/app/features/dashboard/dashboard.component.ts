@@ -1,8 +1,8 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ApiService } from '@core/services/api.service';
-import { AuthService } from '@core/services/auth.service';
-import { Project, Supplier, RfqRequest } from '@shared/models';
+import { ApiService } from '../../core/services/api.service';
+import { AuthService } from '../../core/services/auth.service';
+import { Project, Supplier, RfqRequest } from '../../shared/models';
 
 @Component({
   selector: 'app-dashboard',

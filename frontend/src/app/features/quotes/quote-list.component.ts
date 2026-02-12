@@ -1,12 +1,13 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '@core/services/api.service';
-import { Quote, RfqRequest, Supplier, BoqItem, BillOfQuantities } from '@shared/models';
+import { DecimalPipe } from '@angular/common';
+import { ApiService } from '../../core/services/api.service';
+import { Quote, RfqRequest, Supplier, BoqItem, BillOfQuantities } from '../../shared/models';
 
 @Component({
   selector: 'app-quote-list',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, DecimalPipe],
   template: `
     <div class="page-header">
       <h1>Quotes</h1>

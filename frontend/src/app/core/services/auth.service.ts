@@ -1,7 +1,7 @@
 import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { ApiService } from './api.service';
-import { AuthResponse, LoginRequest, RegisterRequest, User } from '@shared/models';
+import { AuthResponse, LoginRequest, RegisterRequest, User } from '../../shared/models';
 import { tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 

@@ -1,8 +1,8 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '@core/services/api.service';
-import { Project, ProjectStatus } from '@shared/models';
+import { ApiService } from '../../core/services/api.service';
+import { Project, ProjectStatus } from '../../shared/models';
 
 @Component({
   selector: 'app-project-list',

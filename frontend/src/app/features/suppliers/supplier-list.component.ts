@@ -1,7 +1,7 @@
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ApiService } from '@core/services/api.service';
-import { Supplier } from '@shared/models';
+import { ApiService } from '../../core/services/api.service';
+import { Supplier } from '../../shared/models';
 
 @Component({
   selector: 'app-supplier-list',
