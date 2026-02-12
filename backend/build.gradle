@@ -43,6 +43,16 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // Apache POI for Excel parsing
+    implementation 'org.apache.poi:poi:5.2.5'
+    implementation 'org.apache.poi:poi-ooxml:5.2.5'
+
+    // Apache Commons CSV for CSV parsing
+    implementation 'org.apache.commons:commons-csv:1.10.0'
+
+    // Apache Commons Text for fuzzy matching (Levenshtein distance)
+    implementation 'org.apache.commons:commons-text:1.11.0'
+
     // Test
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'

@@ -2,12 +2,13 @@ import { Component, inject, signal, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../core/services/api.service';
-import { Project, BillOfQuantities, BoqItem, Supplier, RfqRequest } from '../../shared/models';
+import { Project, BillOfQuantities, BoqItem, Supplier, RfqRequest, BoqUploadResponse } from '../../shared/models';
+import { BoqUploadComponent } from '../boq/boq-upload.component';
 
 @Component({
   selector: 'app-project-detail',
   standalone: true,
-  imports: [FormsModule, RouterLink],
+  imports: [FormsModule, RouterLink, BoqUploadComponent],
   template: `
     <div class="page-header">
       <div>
@@ -26,10 +27,25 @@ import { Project, BillOfQuantities, BoqItem, Supplier, RfqRequest } from '../../
     <div class="section">
       <div class="section-header">
         <h2>Bill of Quantities</h2>
-        <button class="btn btn-primary" (click)="createBoq()">Create BOQ</button>
+        <div class="btn-group">
+          <button class="btn btn-secondary" (click)="showUploadForm.set(true)">Upload BOQ</button>
+          <button class="btn btn-primary" (click)="createBoq()">Create Manual BOQ</button>
+        </div>
       </div>
 
-      @if (boqs().length === 0) {
+      @if (showUploadForm()) {
+        <div class="card upload-card">
+          <div class="card-header">
+            <h3>Upload BOQ File</h3>
+            <button class="btn-icon" (click)="showUploadForm.set(false)">&times;</button>
+          </div>
+          <app-boq-upload
+            [projectId]="projectId"
+            (uploadComplete)="onBoqUploadComplete($event)" />
+        </div>
+      }
+
+      @if (boqs().length === 0 && !showUploadForm()) {
         <div class="card">
           <p class="empty-state">No BOQ uploaded yet.</p>
         </div>
@@ -289,6 +305,33 @@ import { Project, BillOfQuantities, BoqItem, Supplier, RfqRequest } from '../../
     .btn-danger-text {
       color: var(--danger-color);
     }
+
+    .btn-group {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .upload-card {
+      margin-bottom: 1rem;
+    }
+
+    .upload-card .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+    }
+
+    .upload-card .card-header h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+
+    .upload-card .card-header .btn-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+      padding: 0;
+    }
   `]
 })
 export class ProjectDetailComponent implements OnInit {
@@ -303,6 +346,7 @@ export class ProjectDetailComponent implements OnInit {
 
   showItemForm = signal<number | null>(null);
   showRfqForm = signal(false);
+  showUploadForm = signal(false);
 
   itemForm: Partial<BoqItem> = {
     itemNumber: '',
@@ -357,6 +401,11 @@ export class ProjectDetailComponent implements OnInit {
         next: () => this.loadBoqs()
       });
     }
+  }
+
+  onBoqUploadComplete(result: BoqUploadResponse): void {
+    this.showUploadForm.set(false);
+    this.loadBoqs();
   }
 
   saveItem(boqId: number): void {

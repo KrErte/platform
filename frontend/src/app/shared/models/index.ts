@@ -95,3 +95,41 @@ export interface Quote {
   boqItemDescription?: string;
   supplierCompanyName?: string;
 }
+
+// BOQ Upload Types
+export interface ColumnMapping {
+  targetField: string;
+  detectedHeader: string;
+  columnIndex: number;
+  confidence: number;
+  alternativeHeaders: string[];
+}
+
+export interface ParsedBoqItem {
+  rowNumber: number;
+  itemNumber?: string;
+  description: string;
+  quantity: number;
+  unit: string;
+  materialType?: string;
+  specification?: string;
+  notes?: string;
+  hasParsingErrors: boolean;
+  errorMessage?: string;
+}
+
+export interface BoqUploadResponse {
+  boqId: number;
+  filename: string;
+  totalRowsParsed: number;
+  requiresConfirmation: boolean;
+  overallConfidence: number;
+  columnMappings: ColumnMapping[];
+  previewItems: ParsedBoqItem[];
+  warnings: string[];
+}
+
+export interface ConfirmMappingRequest {
+  boqId: number;
+  columnMappings: Record<string, number>;
+}
