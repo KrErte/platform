@@ -33,7 +33,6 @@ dependencies {
 
     // Flyway
     implementation 'org.flywaydb:flyway-core'
-    runtimeOnly 'org.flywaydb:flyway-database-postgresql:9.22.3'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
