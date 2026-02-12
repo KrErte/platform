@@ -46,66 +46,88 @@ import { AuthService } from './core/services/auth.service';
     .app-layout {
       display: flex;
       min-height: 100vh;
+      background-color: var(--background-color);
     }
 
     .sidebar {
-      width: 250px;
-      background-color: #1e293b;
-      color: white;
+      width: 260px;
+      background-color: var(--sidebar-color);
+      color: var(--text-primary);
       display: flex;
       flex-direction: column;
+      border-right: 1px solid var(--border-color);
+      backdrop-filter: blur(10px);
     }
 
     .sidebar-header {
       padding: 1.5rem;
-      border-bottom: 1px solid #334155;
+      border-bottom: 1px solid var(--border-color);
     }
 
     .logo {
-      font-size: 1.25rem;
+      font-size: 1.375rem;
       font-weight: 700;
-      color: white;
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.025em;
     }
 
     .nav-menu {
       list-style: none;
-      padding: 1rem 0;
+      padding: 1rem 0.75rem;
       flex: 1;
 
+      li {
+        margin-bottom: 0.25rem;
+      }
+
       li a {
-        display: block;
-        padding: 0.75rem 1.5rem;
-        color: #94a3b8;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        color: var(--text-secondary);
         text-decoration: none;
-        transition: all 0.15s ease;
+        border-radius: 8px;
+        transition: all 200ms ease;
+        font-weight: 500;
+        font-size: 0.9rem;
 
         &:hover {
-          color: white;
-          background-color: #334155;
+          color: var(--text-primary);
+          background-color: var(--surface-hover);
         }
 
         &.active {
           color: white;
-          background-color: var(--primary-color);
+          background: var(--primary-gradient);
+          box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
         }
       }
     }
 
     .sidebar-footer {
-      padding: 1rem 1.5rem;
-      border-top: 1px solid #334155;
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border-color);
+      background-color: rgba(0, 0, 0, 0.2);
     }
 
     .user-info {
       margin-bottom: 0.75rem;
-      font-size: 0.875rem;
-      color: #94a3b8;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
     .main-content {
       flex: 1;
       padding: 2rem;
       overflow-y: auto;
+      background-color: var(--background-color);
     }
   `]
 })

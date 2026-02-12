@@ -60,12 +60,24 @@ import { Project, Supplier, RfqRequest } from '../../shared/models';
     </div>
   `,
   styles: [`
+    .dashboard {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
     .welcome-card {
       margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, rgba(99, 102, 241, 0.15) 0%, rgba(139, 92, 246, 0.15) 100%);
+      border: 1px solid rgba(99, 102, 241, 0.3);
 
       h2 {
         font-size: 1.25rem;
         margin-bottom: 0.5rem;
+        color: var(--text-primary);
       }
 
       p {
@@ -82,25 +94,40 @@ import { Project, Supplier, RfqRequest } from '../../shared/models';
 
     .stat-card {
       text-align: center;
+      transition: all 0.2s ease;
+
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: var(--glow-primary);
+        border-color: var(--primary-color);
+      }
     }
 
     .stat-value {
-      font-size: 2rem;
+      font-size: 2.5rem;
       font-weight: 700;
-      color: var(--primary-color);
+      background: var(--primary-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
     }
 
     .stat-label {
       color: var(--text-secondary);
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      font-size: 0.875rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .stat-link {
       font-size: 0.875rem;
       color: var(--primary-color);
       text-decoration: none;
+      transition: color 0.2s ease;
 
       &:hover {
+        color: var(--primary-hover);
         text-decoration: underline;
       }
     }
@@ -109,11 +136,14 @@ import { Project, Supplier, RfqRequest } from '../../shared/models';
       margin-bottom: 1rem;
       font-size: 1rem;
       font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
     }
 
     .actions-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
       gap: 1rem;
     }
 
@@ -121,28 +151,30 @@ import { Project, Supplier, RfqRequest } from '../../shared/models';
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 1.5rem;
+      padding: 2rem 1.5rem;
       text-decoration: none;
       color: var(--text-primary);
-      transition: all 0.15s ease;
+      transition: all 0.2s ease;
 
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+        transform: translateY(-4px);
+        box-shadow: var(--glow-primary);
+        border-color: var(--primary-color);
       }
     }
 
     .action-icon {
-      width: 40px;
-      height: 40px;
+      width: 48px;
+      height: 48px;
       border-radius: 50%;
-      background-color: var(--primary-color);
+      background: var(--primary-gradient);
       color: white;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 1.5rem;
-      margin-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
     }
   `]
 })
